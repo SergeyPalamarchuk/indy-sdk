@@ -629,5 +629,32 @@ namespace Hyperledger.Indy.LedgerApi
 
             return taskCompletionSource.Task;
         }
+
+        /// <summary>
+        /// Builds a POOL_RESTART request
+        /// </summary>
+        /// <param name="submitterDid">The DID of the submitter.</param>
+        /// <param name="action">Action that pool has to do after received transaction. Can be "start" or "cancel"</param>
+        /// <param name="schedule">Time when pool must be restarted.</param>
+        /// <returns>An asynchronous <see cref="Task{T}"/> that resolves to a <see cref="string"/> 
+        /// containing the request JSON. </returns>
+        public static Task<string> BuildPoolRestartRequestAsync(string submitterDid, string action, string schedule)
+        {
+            ParamGuard.NotNullOrWhiteSpace(submitterDid, "submitterDid");
+
+            var taskCompletionSource = new TaskCompletionSource<string>();
+            var commandHandle = PendingCommands.Add(taskCompletionSource);
+
+            var result = NativeMethods.indy_build_pool_restart_request(
+                commandHandle,
+                submitterDid,
+                action,
+                schedule,
+                _buildRequestCallback);
+
+            CallbackHelper.CheckResult(result);
+
+            return taskCompletionSource.Task;
+        }
     }
 }

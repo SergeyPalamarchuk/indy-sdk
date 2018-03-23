@@ -199,5 +199,16 @@ namespace Hyperledger.Indy.LedgerApi
         [DllImport(Consts.NATIVE_LIB_NAME, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
         internal static extern int indy_build_get_txn_request(int command_handle, string submitter_did, int data, BuildRequestCompletedDelegate cb);
 
+        /// <summary>
+        /// Builds a POOL_RESTART request.
+        /// </summary>
+        /// <param name="command_handle">The handle for the command that will be passed to the callback.</param>
+        /// <param name="submitter_did">Id of Identity stored in secured Wallet.</param>
+        /// <param name="action">Action that pool has to do after received transaction. Can be "start" or "cancel"</param>
+        /// <param name="schedule">Time when pool must be restarted.</param>
+        /// <param name="cb">The function that will be called when the asynchronous call is complete.</param>
+        /// <returns>0 if the command was initiated successfully.  Any non-zero result indicates an error.</returns>
+        [DllImport(Consts.NATIVE_LIB_NAME, CharSet = CharSet.Ansi, BestFitMapping = false, ThrowOnUnmappableChar = true)]
+        internal static extern int indy_build_pool_restart_request(int command_handle, string submitter_did, string action, string schedule, BuildRequestCompletedDelegate cb);
     }
 }
